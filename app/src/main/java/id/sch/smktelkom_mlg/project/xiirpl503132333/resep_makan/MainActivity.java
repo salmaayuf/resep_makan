@@ -1,85 +1,121 @@
 package id.sch.smktelkom_mlg.project.xiirpl503132333.resep_makan;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 
 
-public class MainActivity extends Activity implements View.OnClickListener {
-    ImageView Display;
-    TextView informasi, nama;
+public class MainActivity extends Activity {
+    protected ListView lv;
+    protected ListAdapter adapter;
+    SQLiteDatabase db;
+    Cursor cursor;
+    EditText et_db;
 
+    @SuppressWarnings("deprecation")
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Display = (ImageView) findViewById(R.id.gambarutama);
-        ImageView gambar1 = (ImageView) findViewById(R.id.daftargambar1);
-        ImageView gambar2 = (ImageView) findViewById(R.id.daftargambar2);
-        ImageView gambar3 = (ImageView) findViewById(R.id.daftargambar3);
-        ImageView gambar4 = (ImageView) findViewById(R.id.daftargambar4);
-        ImageView gambar5 = (ImageView) findViewById(R.id.daftargambar5);
-        ImageView gambar6 = (ImageView) findViewById(R.id.daftargambar6);
-        informasi = (TextView) findViewById(R.id.informasi);
-        nama = (TextView) findViewById(R.id.nama);
-        gambar1.setOnClickListener(this);
-        gambar2.setOnClickListener(this);
-        gambar3.setOnClickListener(this);
-        gambar4.setOnClickListener(this);
-        gambar5.setOnClickListener(this);
-        gambar6.setOnClickListener(this);
+        setContentView(R.layout.main);
+
+        db = (new DB_Resep(this)).getWritableDatabase();
+        lv = (ListView) findViewById(R.id.lv);
+        et_db = (EditText) findViewById(R.id.et);
+
+        try {
+            cursor = db.rawQuery("SELECT * FROM resep ORDER BY nama ASC", null);
+            adapter = new SimpleCursorAdapter(this, R.layout.isi_lv, cursor,
+                    new String[] { "nama", "bahan", "img" }, new int[] {
+                    R.id.tv_nama, R.id.tvBahan, R.id.imV });
+            lv.setAdapter(adapter);
+            lv.setTextFilterEnabled(true);
+            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View v,
+                                        int position, long id) {
+                    detail(position);
+
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
-    @Override
-    public void onClick(View v) {
-// TODO Auto-generated method stub
-        String nama1 = "ZZZZZ";
-        String nama2 = "ZZZZZ";
-        String nama3 = "ZZZZZ";
-        String nama4 = "ZZZZZ";
-        String nama5 = "ZZZZZ";
-        String nama6 = "ZZZZZ";
-        String info1 = "ZZZZ memiliki rasa yang lezat dan nikmat, Hamburger dijual dengan harga Rp. 15.000.";
-        String info2 = "ZZZZ memiliki rasa yang lezat dan nikmat, Steak dijual dengan harga Rp. 35.000.";
-        String info3 = "ZZZZ memiliki rasa yang lezat dan nikmat, Sate dijual dengan harga Rp. 15.000.";
-        String info4 = "ZZZZ memiliki rasa yang lezat dan nikmat, Pizza dijual dengan harga Rp. 85.000.";
-        String info5 = "ZZZZ  memiliki rasa yang lezat dan nikmat, Pudding dijual dengan harga Rp. 25.000.";
-        String info6 = "ZZZZ memiliki rasa yang lezat dan nikmat, Brownies dijual dengan harga Rp. 35.000.";
-
-        switch (v.getId()) {
-            case R.id.daftargambar1:
-                nama.setText(String.valueOf(nama1));
-                Display.setImageResource(R.drawable.a);
-                informasi.setText(String.valueOf(info1));
-                break;
-            case R.id.daftargambar2:
-                nama.setText(String.valueOf(nama2));
-                Display.setImageResource(R.drawable.b);
-                informasi.setText(String.valueOf(info2));
-                break;
-            case R.id.daftargambar3:
-                nama.setText(String.valueOf(nama3));
-                Display.setImageResource(R.drawable.c);
-                informasi.setText(String.valueOf(info3));
-                break;
-            case R.id.daftargambar4:
-                nama.setText(String.valueOf(nama4));
-                Display.setImageResource(R.drawable.d);
-                informasi.setText(String.valueOf(info4));
-                break;
-            case R.id.daftargambar5:
-                nama.setText(String.valueOf(nama5));
-                Display.setImageResource(R.drawable.e);
-                informasi.setText(String.valueOf(info5));
-                break;
-            case R.id.daftargambar6:
-                nama.setText(String.valueOf(nama6));
-                Display.setImageResource(R.drawable.f);
-                informasi.setText(String.valueOf(info6));
-                break;
+    @SuppressWarnings("deprecation")
+    public void search_db(View v) {
+        String edit_db = et_db.getText().toString();
+        if (!edit_db.equals("")) {
+            try {
+                cursor = db.rawQuery("SELECT * FROM resep WHERE nama LIKE ?",
+                        new String[] { "%" + edit_db + "%" });
+                adapter = new SimpleCursorAdapter(
+                        this,
+                        R.layout.isi_lv,
+                        cursor,
+                        new String[] { "nama", "bahan", "img" },
+                        new int[] { R.id.tv_nama, R.id.tvBahan, R.id.imV });
+                if (adapter.getCount() == 0) {
+                    Toast.makeText(
+                            this,
+                            "Tidak ditemukan data dengan kata kunci " + edit_db
+                                    + "", Toast.LENGTH_SHORT).show();
+                } else {
+                    lv.setAdapter(adapter);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                cursor = db.rawQuery("SELECT * FROM resep ORDER BY nama ASC",
+                        null);
+                adapter = new SimpleCursorAdapter(
+                        this,
+                        R.layout.isi_lv,
+                        cursor,
+                        new String[] { "nama", "bahan", "img" },
+                        new int[] { R.id.tv_nama, R.id.tvBahan, R.id.imV });
+                lv.setAdapter(adapter);
+                lv.setTextFilterEnabled(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
+
+    public void detail(int position) {
+        int im = 0;
+        String _id = "";
+        String nama = "";
+        String bahan = "";
+        String cara = "";
+        if (cursor.moveToFirst()) {
+            cursor.moveToPosition(position);
+            im = cursor.getInt(cursor.getColumnIndex("img"));
+            nama = cursor.getString(cursor.getColumnIndex("nama"));
+            bahan = cursor.getString(cursor.getColumnIndex("bahan"));
+            cara = cursor.getString(cursor.getColumnIndex("cara"));
+        }
+
+        Intent iIntent = new Intent(this, DB_Parse.class);
+        iIntent.putExtra("dataIM", im);
+        iIntent.putExtra("dataNama", nama);
+        iIntent.putExtra("dataBahan", bahan);
+        iIntent.putExtra("dataCara", cara);
+        setResult(RESULT_OK, iIntent);
+        startActivityForResult(iIntent, 99);
+    }
+
 }
