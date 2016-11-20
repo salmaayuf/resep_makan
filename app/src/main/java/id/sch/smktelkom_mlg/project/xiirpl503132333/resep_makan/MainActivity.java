@@ -24,6 +24,36 @@ public class MainActivity extends Activity {
     Cursor cursor;
     EditText et_db;
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate dari menu; disini akan menambahkan item menu pada Actionbar
+        getMenuInflater().inflate(R.menu.menu, menu);//Memanggil file bernama menu di folder menu
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu1:
+                Toast.makeText(getApplicationContext(), "Menu Home dipilih", Toast.LENGTH_LONG).show();
+                return true;
+            case R.id.menu2:
+                Toast.makeText(getApplicationContext(), "Menu About dipilih", Toast.LENGTH_LONG).show();
+                return true;
+            case R.id.menu3:
+                Toast.makeText(getApplicationContext(), "Menu Petunjuk dipilih", Toast.LENGTH_LONG).show();
+                return true;
+            case R.id.menu4:
+                Toast.makeText(getApplicationContext(), "Menu Kontak dipilih", Toast.LENGTH_LONG).show();
+                return true;
+            case R.id.menu5:
+                Toast.makeText(getApplicationContext(), "Menu Keluar dipilih", Toast.LENGTH_LONG).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,35 +86,6 @@ public class MainActivity extends Activity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate dari menu; disini akan menambahkan item menu pada Actionbar
-        getMenuInflater().inflate(R.menu.menu, menu);//Memanggil file bernama menu di folder menu
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu1:
-                Toast.makeText(getApplicationContext(), "Menu Home dipilih", Toast.LENGTH_LONG).show();
-                return true;
-            case R.id.menu2:
-                Toast.makeText(getApplicationContext(), "Menu About dipilih", Toast.LENGTH_LONG).show();
-                return true;
-            case R.id.menu3:
-                Toast.makeText(getApplicationContext(), "Menu Petunjuk dipilih", Toast.LENGTH_LONG).show();
-                return true;
-            case R.id.menu4:
-                Toast.makeText(getApplicationContext(), "Menu Kontak dipilih", Toast.LENGTH_LONG).show();
-                return true;
-            case R.id.menu5:
-                Toast.makeText(getApplicationContext(), "Menu Keluar dipilih", Toast.LENGTH_LONG).show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
     @SuppressWarnings("deprecation")
     public void search_db(View v) {
