@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -15,11 +17,42 @@ import android.widget.Toast;
 
 
 public class MainActivity extends Activity {
+
     protected ListView lv;
     protected ListAdapter adapter;
     SQLiteDatabase db;
     Cursor cursor;
     EditText et_db;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate dari menu; disini akan menambahkan item menu pada Actionbar
+        getMenuInflater().inflate(R.menu.menu, menu);//Memanggil file bernama menu di folder menu
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu1:
+                Toast.makeText(getApplicationContext(), "Menu Home dipilih", Toast.LENGTH_LONG).show();
+                return true;
+            case R.id.menu2:
+                Toast.makeText(getApplicationContext(), "Menu About dipilih", Toast.LENGTH_LONG).show();
+                return true;
+            case R.id.menu3:
+                Toast.makeText(getApplicationContext(), "Menu Petunjuk dipilih", Toast.LENGTH_LONG).show();
+                return true;
+            case R.id.menu4:
+                Toast.makeText(getApplicationContext(), "Menu Kontak dipilih", Toast.LENGTH_LONG).show();
+                return true;
+            case R.id.menu5:
+                Toast.makeText(getApplicationContext(), "Menu Keluar dipilih", Toast.LENGTH_LONG).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     @SuppressWarnings("deprecation")
     @Override
@@ -52,6 +85,7 @@ public class MainActivity extends Activity {
         }
 
     }
+
 
     @SuppressWarnings("deprecation")
     public void search_db(View v) {
