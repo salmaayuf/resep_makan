@@ -95,7 +95,8 @@ public class MainActivity extends Activity {
         }
     }
 
-    public void detail(int position) {
+    public void detail(int position)
+    {
         int im = 0;
         String _id = "";
         String nama = "";

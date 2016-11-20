@@ -98,4 +98,10 @@
 
         </LinearLayout>
     </HorizontalScrollView>
+
+    <Button
+        android:text="Menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonMenu" />
 </LinearLayout>
