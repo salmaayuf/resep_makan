@@ -1,8 +1,10 @@
 package id.sch.smktelkom_mlg.project.xiirpl503132333.resep_makan;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -10,12 +12,14 @@ import android.widget.TextView;
 public class utama extends Activity implements View.OnClickListener {
     ImageView Display;
     TextView informasi, nama;
+    Button bOK;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Display = (ImageView) findViewById(R.id.gambarutama);
+        bOK = (Button) findViewById(R.id.buttonOK);
         ImageView gambar1 = (ImageView) findViewById(R.id.daftargambar1);
         ImageView gambar2 = (ImageView) findViewById(R.id.daftargambar2);
         ImageView gambar3 = (ImageView) findViewById(R.id.daftargambar3);
@@ -30,9 +34,22 @@ public class utama extends Activity implements View.OnClickListener {
         gambar4.setOnClickListener(this);
         gambar5.setOnClickListener(this);
         gambar6.setOnClickListener(this);
+        bOK.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+
+                // TODO Auto-generated method stub
+
+                Intent i =new Intent(getApplicationContext(),MainActivity.class);
+
+                startActivity(i);
+
+
+
+            }
+
+        });
 
     }
-
     @Override
     public void onClick(View v) {
 // TODO Auto-generated method stub
